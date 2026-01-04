@@ -1,20 +1,25 @@
 import { useState } from "react";
-import MovieList from "./components/MovieList";
-import Filter from "./components/Filter";
+import { Routes, Route } from "react-router-dom";
+import Home from "./Pages/Home";
+import MovieDetails from "./Pages/MovieDetails";
 
 function App() {
-  const [movies, setMovies] = useState([
+  const [movies] = useState([
     {
+      id: 1,
       title: "Inception",
       description: "A mind-bending thriller",
       posterURL: "https://via.placeholder.com/200",
       rating: 5,
+      trailer: "https://www.youtube.com/embed/YoHD9XEInc0",
     },
     {
+      id: 2,
       title: "Interstellar",
       description: "Space exploration and time",
       posterURL: "https://via.placeholder.com/200",
       rating: 4,
+      trailer: "https://www.youtube.com/embed/zSWdZVtXT7E",
     },
   ]);
 
@@ -27,31 +32,23 @@ function App() {
       movie.rating >= rateFilter
   );
 
-  // Add new movie
-  const addMovie = () => {
-    const newMovie = {
-      title: "New Movie",
-      description: "New description",
-      posterURL: "https://via.placeholder.com/200",
-      rating: 3,
-    };
-
-    setMovies([...movies, newMovie]);
-  };
-
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>🎬 Movie App</h1>
-
-      <Filter
-        setTitleFilter={setTitleFilter}
-        setRateFilter={setRateFilter}
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <Home
+            movies={filteredMovies}
+            setTitleFilter={setTitleFilter}
+            setRateFilter={setRateFilter}
+          />
+        }
       />
-
-      <button onClick={addMovie}>Add Movie</button>
-
-      <MovieList movies={filteredMovies} />
-    </div>
+      <Route
+        path="/movie/:id"
+        element={<MovieDetails movies={movies} />}
+      />
+    </Routes>
   );
 }
 
